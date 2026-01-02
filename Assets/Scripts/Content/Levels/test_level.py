@@ -10,10 +10,11 @@ class TestLevel(Level):
         self.application = application
 
         self.theme_music = arcade.load_sound(LEVEL1OST)
-        arcade.play_sound(self.theme_music, loop=True, volume=float(application.settings["Application"]["Volume"]))
+        self.on_game_over.connect(lambda: self.theme_music_player.delete())
         self.bg = arcade.load_texture(application.settings["Sprites"]["LevelsBG"])
 
     def setup(self):
         """Настраиваем игру здесь. Вызывается при старте и при рестарте"""
         super().setup(self.application.settings["Tilemap"]["TestLevel"])
+        self.theme_music_player = arcade.play_sound(self.theme_music, loop=True, volume=float(self.application.settings["Application"]["Volume"]))
         self.window.set_caption("Test Level")

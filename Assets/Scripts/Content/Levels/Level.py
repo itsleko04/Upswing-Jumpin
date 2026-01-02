@@ -5,7 +5,7 @@ from Assets.Scripts.Content.Levels.game_over_panel import GameOverView
 
 
 CAMERA_LERP = 0.8
-GRAVITY = 0.35
+GRAVITY = 0.5
 
 
 class Level(arcade.View):

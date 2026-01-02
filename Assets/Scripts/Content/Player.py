@@ -2,7 +2,7 @@ import arcade
 
 
 PLAYER_SPEED = 6
-PLAYER_JUMP_FORCE = 8
+PLAYER_JUMP_FORCE = 10
 
 
 class Player(arcade.Sprite):
@@ -20,6 +20,7 @@ class Player(arcade.Sprite):
             self.change_y = 0
         if self.angle % 180 == 0:
             self.change_angle = 0
+            self.angle = 0
 
     def freeze(self):
         self.is_freeze = True
@@ -28,7 +29,7 @@ class Player(arcade.Sprite):
         self.is_freeze = False
     
     def jump(self):
-        angle_speed = 4
+        angle_speed = 5
         self.change_y += self.jump_force
         self.change_angle = angle_speed
         self.angle = angle_speed
