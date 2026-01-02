@@ -1,4 +1,4 @@
-from Assets.Scripts.CustomSystem.application import Application
+from Assets import Application
 
 
 def main():
