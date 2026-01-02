@@ -1,7 +1,7 @@
 import arcade
 import Assets.Scripts.Engine as Engine
 from Assets.Scripts.Content.Player import Player
-from Assets.Scripts.Content.Levels.game_over_panel import GameOverView
+from Assets.Scripts.Content.GameOverView import GameOverView
 
 
 CAMERA_LERP = 0.8

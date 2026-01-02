@@ -1,6 +1,6 @@
 import arcade
 from configparser import ConfigParser
-from Assets.Scripts.Content.Levels.test_level import TestLevel
+from Assets.Scripts.Content.Levels.TestLevel import TestLevel
 from Assets.Scripts.Content.Levels.Level import Level
 
 
