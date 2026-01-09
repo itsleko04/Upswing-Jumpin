@@ -1,5 +1,5 @@
 from Assets import Application
-
+#ghgh
 
 def main():
     app = Application("settings.ini")
