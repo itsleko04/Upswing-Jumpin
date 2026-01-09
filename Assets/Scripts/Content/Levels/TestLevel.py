@@ -1,5 +1,4 @@
 import arcade
-from Assets.Scripts.Content.Player import Player
 from Assets.Scripts.Content.Levels.Level import Level
 from Assets.Sounds.OST import LEVEL1OST
 

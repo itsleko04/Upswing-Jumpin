@@ -1,5 +1,5 @@
 import arcade
-import Assets.Scripts.Engine as Engine
+from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.Player import Player
 from Assets.Scripts.Content.GameOverView import GameOverView
 
@@ -13,7 +13,7 @@ class Level(arcade.View):
         super().__init__(application.window)
         self.application = application
 
-        self.on_game_over = Engine.Event()
+        self.on_game_over = Event()
         self.is_game_over = False
         self.on_game_over.connect(lambda: self.__on_game_over_flag())
         self.cell_size = 51.2
@@ -25,6 +25,7 @@ class Level(arcade.View):
         self.player = Player(self.application.settings["Sprites"]["PlayerIdle"], 0.075)
         self.player.left = self.cell_size * 11
         self.player.bottom = self.cell_size * 11
+        self.player.on_death.connect(lambda: self.on_game_over.invoke())
         self.player_list.append(self.player)
 
         self.tile_map = arcade.load_tilemap(tilemap_path, scaling=0.1)
@@ -65,7 +66,6 @@ class Level(arcade.View):
         if len(self.physics_engine.player_sprite.collides_with_list(self.shapes_list)) != 0:
             self.player.die()
             self.player = None
-            self.on_game_over.invoke()
     
     def on_draw(self):
         self.clear()

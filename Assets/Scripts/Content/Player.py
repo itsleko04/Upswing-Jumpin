@@ -1,7 +1,7 @@
 import arcade
+from Assets.Scripts.Engine.Events import Event
 
-
-PLAYER_SPEED = 6
+PLAYER_SPEED = 6.5
 PLAYER_JUMP_FORCE = 10
 
 
@@ -13,6 +13,8 @@ class Player(arcade.Sprite):
         self.jump_force = jump_force
         self.change_x = movement_speed
         self.can_double_jump = False
+        
+        self.on_death = Event()
     
     def update(self, delta_time = 1 / 60, gravity=10):
         if self.is_freeze:
@@ -21,6 +23,8 @@ class Player(arcade.Sprite):
         if self.angle % 180 == 0:
             self.change_angle = 0
             self.angle = 0
+        if self.center_y <= -5:
+            self.die()
 
     def freeze(self):
         self.is_freeze = True
@@ -35,4 +39,5 @@ class Player(arcade.Sprite):
         self.angle = angle_speed
 
     def die(self):
+        self.on_death.invoke()
         self.remove_from_sprite_lists()
