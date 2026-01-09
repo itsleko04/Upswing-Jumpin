@@ -1,5 +1,4 @@
 from Assets import Application
-from Assets import OST
 
 
 def main():
