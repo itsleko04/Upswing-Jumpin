@@ -4,4 +4,4 @@ We are a team of two people from Russia. The project was implemented as part of 
 We hope you enjoy it!
 ## Team
 Lead Programmer — Nikolay Lipnitskiy <br/>
-Second Programmer and Artist — Diana Volkova 
+Second Programmer and Artist — Diana Volkova

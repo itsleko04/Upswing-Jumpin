@@ -1,9 +1,10 @@
 import arcade
-from Assets.Scripts.Content.Levels.Level import Level
+from Assets.Scripts.Engine.Level import Level
 from Assets.Sounds.OST import LEVEL1OST
 
 
 class TestLevel(Level):
+    """Первый, пока что тестовый уровень. Непроходимый."""
     def __init__(self, application):
         super().__init__(application)
         self.application = application
@@ -15,5 +16,5 @@ class TestLevel(Level):
     def setup(self):
         """Настраиваем игру здесь. Вызывается при старте и при рестарте"""
         super().setup(self.application.settings["Tilemap"]["TestLevel"])
-        self.theme_music_player = arcade.play_sound(self.theme_music, loop=True, volume=float(self.application.settings["Application"]["Volume"]))
+        self.theme_music_player = arcade.play_sound(self.theme_music, loop=True, volume=float(self.application.volume))
         self.window.set_caption("Test Level")
