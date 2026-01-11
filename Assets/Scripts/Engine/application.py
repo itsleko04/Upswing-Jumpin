@@ -1,9 +1,9 @@
 import arcade
-from configparser import ConfigParser
 
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.Levels.TestLevel import TestLevel
 from Assets.Scripts.Engine import Level
+from Assets.GC import VOLUME
 
 
 class Window(arcade.Window):
@@ -18,12 +18,10 @@ class Window(arcade.Window):
 
 class Application:
     """Базовая реализация запуска игровой сессии"""
-    def __init__(self, settings_path: str):
-        self.settings_path = settings_path
-        self.settings = ConfigParser()
-        self.settings.read(self.settings_path)
+    def __init__(self, settings):
+        self.settings = settings
 
-        self.volume = float(self.settings["Application"]["Volume"])
+        self.volume = VOLUME
 
         self.width = float(self.settings["Application"]["ScreenWidth"])
         self.height = float(self.settings["Application"]["ScreenHeight"])
@@ -44,9 +42,7 @@ class Application:
         self.volume = volume
 
     def save_volume(self):
-        self.settings["Application"]["Volume"] = str(self.volume)
-        with open(self.settings_path, "w") as settings_file:
-            self.settings.write(settings_file)
+        ...
 
     def run(self):
         """Запустить игру"""

@@ -1,8 +1,11 @@
 from Assets import Application
+from configparser import ConfigParser
 
 
 def main():
-    app = Application("settings.ini")
+    settings = ConfigParser()
+    settings.read("settings.ini")
+    app = Application(settings)
     app.run()
 
 
