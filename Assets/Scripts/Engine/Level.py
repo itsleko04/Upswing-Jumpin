@@ -25,12 +25,14 @@ class Level(arcade.View):
     def setup(self, tilemap_path):
         self.is_game_over = False
         self.player_list = arcade.SpriteList()
-        self.world_camera = arcade.camera.Camera2D()
         self.player = PlayerCube(self.application.settings["Sprites"]["PlayerIdle"], 0.075)
         self.player.left = self.cell_size * 11
         self.player.bottom = self.cell_size * 11
         self.player.on_death.connect(self.on_game_over.invoke)
         self.player_list.append(self.player)
+        
+        self.world_camera = arcade.camera.Camera2D()
+        self.world_camera.position = self.player.position
 
         self.tile_map = arcade.load_tilemap(tilemap_path, scaling=0.1)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
