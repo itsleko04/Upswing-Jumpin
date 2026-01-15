@@ -3,10 +3,7 @@ from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.PlayerModes import PlayerCube
 from Assets.Scripts.Engine.GameOverView import GameOverView
 
-from Assets.GC import GRAVITY
-
-
-CAMERA_LERP = 0.8
+from Assets.GC import GRAVITY, CAMERA_LERP
 
 
 class Level(arcade.View):
