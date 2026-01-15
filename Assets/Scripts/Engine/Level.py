@@ -3,6 +3,8 @@ from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.PlayerModes import PlayerCube
 from Assets.Scripts.Engine.GameOverView import GameOverView
 
+
+from Assets.Scripts.Engine import InputSystem
 from Assets.GC import GRAVITY, CAMERA_LERP
 
 
@@ -48,6 +50,12 @@ class Level(arcade.View):
     def on_update(self, delta_time):
         if self.is_game_over:
             return
+        
+        jump_keys = (InputSystem.Keys.SPACE, InputSystem.Keys.MOUSE_LEFT)
+        jumping = any([InputSystem.on_key_down(key) for key in jump_keys])
+        if jumping:
+            self.__try_to_jump()
+        
         self.player_list.update(delta_time)
         self.physics_engine.update()
 
@@ -65,7 +73,7 @@ class Level(arcade.View):
             collided_autojumpers_count = len(self.physics_engine.player_sprite.collides_with_list(self.autojumpers))
             if collided_autojumpers_count != 0:
                 self.player.change_y = 0
-                self.player.on_jump_input()
+                self.player.jump()
         
         if len(self.dash_arrows) != 0:
             collided_dash_arrows_count = len(self.physics_engine.player_sprite.collides_with_list(self.dash_arrows))
@@ -89,25 +97,9 @@ class Level(arcade.View):
         self.is_game_over = True
         self.window.show_view(GameOverView(self.application))
 
-    def __on_jump_input(self):
+    def __try_to_jump(self):
         if self.physics_engine.can_jump(5) and self.player.change_y == 0 or self.player.can_double_jump:
             self.player.change_y = 0
-            self.player.on_jump_input()
+            self.player.jump()
         if self.player.can_dash:
             self.player.dashing = True
-
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.SPACE:
-            self.__on_jump_input()
-    
-    def on_key_release(self, key, modifiers):
-        if key == arcade.key.SPACE:
-            self.player.dashing = False
-
-    def on_mouse_press(self, x, y, button, modifiers):
-        if button == arcade.MOUSE_BUTTON_LEFT:
-            self.__on_jump_input()
-
-    def on_mouse_release(self, x, y, button, modifiers):
-        if button == arcade.MOUSE_BUTTON_LEFT:
-            self.player.dashing = False

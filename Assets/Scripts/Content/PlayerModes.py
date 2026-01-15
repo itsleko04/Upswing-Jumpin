@@ -18,7 +18,7 @@ class PlayerCube(Player):
             self.change_angle = 0
             self.angle = 0
     
-    def on_jump_input(self):
+    def jump(self):
         angle_speed = 5
         self.change_y += self.jump_force
         self.change_angle = angle_speed

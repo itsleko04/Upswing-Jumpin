@@ -26,8 +26,7 @@ class Player(arcade.Sprite):
     def unfreeze(self):
         self.is_freeze = False
     
-    def on_jump_input(self):
-        """Выполняется, когда пользователь вводит клавишу прыжка"""
+    def jump(self):
         pass
 
     def die(self):

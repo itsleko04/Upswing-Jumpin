@@ -1,6 +1,8 @@
 import arcade
 from pyglet.graphics import Batch
 
+from Assets.Scripts.Engine import InputSystem
+
 
 class GameOverView(arcade.View):
     """Окно смерти"""
@@ -27,8 +29,8 @@ class GameOverView(arcade.View):
         self.gui_camera.use()
         self.batch.draw()
     
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.R:
+    def on_update(self, delta_time):
+        if InputSystem.on_key_down(InputSystem.Keys.R):
             self.restart()
     
     def restart(self):
