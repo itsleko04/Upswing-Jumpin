@@ -2,7 +2,7 @@ import arcade
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.PlayerModes import PlayerCube
 from Assets.Scripts.Engine.GameOverView import GameOverView
-
+from Assets.Scripts.Content.DashArrow import DashArrow 
 
 from Assets.Scripts.Engine import InputSystem
 from Assets.GC import GRAVITY, CAMERA_LERP
@@ -39,8 +39,9 @@ class Level(arcade.View):
         self.shapes_list = self.scene["shapes"]
         self.jump_points = self.scene["jump_points"]
         self.autojumpers = self.scene["autojumpers"]
-        #self.dash_arrows = self.scene["dash_arrows"]
-        self.dash_arrows = []
+        self.dash_arrows_layer = self.scene["dash_arrows"]
+        self.dash_arrows = arcade.SpriteList()
+        self.dash_arrows.extend([DashArrow(arrow.position) for arrow in self.dash_arrows_layer])
         self.collision_list = self.scene["collision"]
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
