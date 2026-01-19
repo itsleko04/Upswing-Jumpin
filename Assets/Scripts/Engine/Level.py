@@ -2,7 +2,7 @@ import arcade
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.PlayerModes import PlayerCube
 from Assets.Scripts.Engine.GameOverView import GameOverView
-
+from Assets.Scripts.Content.DashArrow import DashArrow 
 
 from Assets.Scripts.Engine import InputSystem
 from Assets.GC import GRAVITY, CAMERA_LERP
@@ -25,20 +25,23 @@ class Level(arcade.View):
     def setup(self, tilemap_path):
         self.is_game_over = False
         self.player_list = arcade.SpriteList()
-        self.world_camera = arcade.camera.Camera2D()
         self.player = PlayerCube(self.application.settings["Sprites"]["PlayerIdle"], 0.075)
         self.player.left = self.cell_size * 11
         self.player.bottom = self.cell_size * 11
         self.player.on_death.connect(self.on_game_over.invoke)
         self.player_list.append(self.player)
+        
+        self.world_camera = arcade.camera.Camera2D()
+        self.world_camera.position = self.player.position
 
         self.tile_map = arcade.load_tilemap(tilemap_path, scaling=0.1)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
         self.shapes_list = self.scene["shapes"]
         self.jump_points = self.scene["jump_points"]
         self.autojumpers = self.scene["autojumpers"]
-        #self.dash_arrows = self.scene["dash_arrows"]
-        self.dash_arrows = []
+        self.dash_arrows_layer = self.scene["dash_arrows"]
+        self.dash_arrows = arcade.SpriteList()
+        self.dash_arrows.extend([DashArrow(arrow.position) for arrow in self.dash_arrows_layer])
         self.collision_list = self.scene["collision"]
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
