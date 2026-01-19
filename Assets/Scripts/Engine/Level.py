@@ -2,7 +2,7 @@ import arcade
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.PlayerModes import PlayerCube
 from Assets.Scripts.Engine.GameOverView import GameOverView
-from Assets.Scripts.Content.DashArrow import DashArrow 
+from Assets.Scripts.Content.dashArrow import DashArrow 
 
 from Assets.Scripts.Engine import InputSystem
 from Assets.GC import GRAVITY, CAMERA_LERP
