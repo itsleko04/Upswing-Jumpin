@@ -21,21 +21,15 @@ class MenuView(arcade.View):
         self.play_list.clear()
 
         # Настройки кнопки
-        settings = arcade.Sprite("Assets/Sprites/settingsBtn.jpg", 0.5)
-        settings.center_x = self.application.width // 2
-        settings.center_y = 250
+        settings = arcade.Sprite("Assets/Sprites/settingsBtn.jpg", 0.5, self.application.width // 2, 250)
         self.settings_list.append(settings)
 
         # Кнопка Play
-        play = arcade.Sprite("Assets/Sprites/playBtn.jpg", 0.5)
-        play.center_x = self.application.width // 2
-        play.center_y = 380
+        play = arcade.Sprite("Assets/Sprites/playBtn.jpg", 0.5, self.application.width // 2, 380)
         self.play_list.append(play)
 
         # Кнопка Escape
-        escape = arcade.Sprite("Assets/Sprites/exitBtn.jpg", 0.5)
-        escape.center_x = self.application.width // 2
-        escape.center_y = 130
+        escape = arcade.Sprite("Assets/Sprites/exitBtn.jpg", 0.5, self.application.width // 2, 130)
         self.escape_list.append(escape)
 
     def on_draw(self):
@@ -48,7 +42,7 @@ class MenuView(arcade.View):
         self.escape_list.draw()
         self.play_list.draw()
         # Заголовок
-        arcade.draw_text(TITLE, self.application.width,
+        arcade.draw_text(TITLE, self.application.width // 2,
             self.application.height - 100, arcade.color.WHITE, 50, anchor_x="center")
 
     def on_mouse_press(self, x, y, button, modifiers):
@@ -110,9 +104,9 @@ class PlayView(arcade.View):
         self.clear()
         arcade.set_background_color((0, 126, 35, 0))
         arcade.draw_text("Выберите уровень", 500, 700, arcade.color.WHITE, 50, anchor_x="center")
-        arcade.draw_text("Нажмите ESC для возврата", 500, 50, arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text("Нажмите ESC для возврата", 500, 50, (255, 255, 255, 80), 20, anchor_x="center")
         arcade.draw_text("1 уровень", 300, 280, arcade.color.WHITE, 40, anchor_x="center")
-        arcade.draw_text("2 уровень", 700, 280, arcade.color.WHITE, 40, anchor_x="center")
+        arcade.draw_text("Недоступно", 700, 280, arcade.color.RED, 40, anchor_x="center")
         self.level1.draw()
         self.level2.draw()
 
