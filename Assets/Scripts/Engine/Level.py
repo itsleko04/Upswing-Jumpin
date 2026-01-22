@@ -94,10 +94,10 @@ class Level(arcade.View):
 
     def __on_game_over_flag(self):
         self.is_game_over = True
-        self.window.show_view(GameResultView(self.application, "Gameover"))
+        self.window.show_view(GameResultView(self.application, "Gameover", "Вы проиграли!"))
 
     def __on_level_finished(self):
-        self.window.show_view(GameResultView(self.application, "VICTORY!!!"))
+        self.window.show_view(GameResultView(self.application, "VICTORY!!!", "Уровень пройден!"))
 
     def __try_to_jump(self):
         if self.physics_engine.can_jump(5) and self.player.change_y == 0 or self.player.can_double_jump:
