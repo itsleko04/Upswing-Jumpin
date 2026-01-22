@@ -1,7 +1,7 @@
 import arcade
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.PlayerModes import PlayerCube
-from Assets.Scripts.Engine.GameOverView import GameOverView
+from Assets.Scripts.Engine.GameResultView import GameResultView
 
 from Assets.Scripts.Engine import InputSystem
 from Assets.GC import GRAVITY, CAMERA_LERP
@@ -39,6 +39,7 @@ class Level(arcade.View):
         self.jump_points = self.scene["jump_points"]
         self.autojumpers = self.scene["autojumpers"]
         self.collision_list = self.scene["collision"]
+        self.finish = self.scene["finish"]
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             player_sprite=self.player, 
@@ -77,12 +78,15 @@ class Level(arcade.View):
         if len(self.physics_engine.player_sprite.collides_with_list(self.shapes_list)) != 0:
             self.player.die()
             self.player = None
+        
+        if self.physics_engine.player_sprite.collides_with_list(self.finish):
+            self.__on_level_finished()
     
     def on_draw(self):
         self.clear()
         self.world_camera.use()
         for i in range(1, 20):
-            rect = arcade.XYWH(self.window.rect.x * i, self.window.rect.y * 3, 
+            rect = arcade.XYWH(self.window.rect.x * i, self.window.rect.y * 2, 
                                self.window.rect.width, self.window.rect.height)
             arcade.draw_texture_rect(self.bg, rect)
         self.scene.draw()
@@ -90,7 +94,10 @@ class Level(arcade.View):
 
     def __on_game_over_flag(self):
         self.is_game_over = True
-        self.window.show_view(GameOverView(self.application))
+        self.window.show_view(GameResultView(self.application, "Gameover"))
+
+    def __on_level_finished(self):
+        self.window.show_view(GameResultView(self.application, "VICTORY!!!"))
 
     def __try_to_jump(self):
         if self.physics_engine.can_jump(5) and self.player.change_y == 0 or self.player.can_double_jump:

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="21" tilewidth="512" tileheight="512" infinite="0" nextlayerid="10" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="21" tilewidth="512" tileheight="512" infinite="0" nextlayerid="11" nextobjectid="1">
  <tileset firstgid="1" source="LevelsTileset.tsx"/>
  <layer id="5" name="collision" width="80" height="21">
   <data encoding="base64" compression="zlib">
    eJztwzEJAAAMA7Be8y95Igq9EkgCAACwcVYBAABWHrtoAeE=
   </data>
  </layer>
- <layer id="9" name="dash_arrows" width="80" height="21">
+ <layer id="10" name="finish" width="80" height="21">
   <data encoding="base64" compression="zlib">
-   eJztxrENAAAIA6AO/n+zexMvECYSAACgzXEAAAD4YAGS0AAJ
+   eJzt0LEJADAMwLBM/f/kLr0gngoS+AHPsHFe7PjX+Nf41/jX+Nf41/jX+Nf4BwAA8JcLMpcAeQ==
   </data>
  </layer>
  <layer id="7" name="jump_points" width="80" height="21">
@@ -23,7 +23,7 @@
  </layer>
  <layer id="2" name="shapes" width="80" height="21">
   <data encoding="base64" compression="zlib">
-   eJztzcEJAAAIAzHdf2lXUBBESN5HGwEAAFzJQddpJ3ubn90WAACAHwqocAAL
+   eJztzcEJAAAIAzHdf2lXUBAESd5HGwEAAFzJQddpJ3tbnwAAAPxTfrgACA==
   </data>
  </layer>
  <layer id="1" name="ground" width="80" height="21">
