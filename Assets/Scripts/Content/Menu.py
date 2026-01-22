@@ -75,11 +75,22 @@ class SettingsView(arcade.View):
     def on_draw(self):
         self.clear()
         arcade.set_background_color((126, 100, 145, 255))
-        arcade.draw_text("Настройки", self.application.width // 2,
-            self.application.height // 2, arcade.color.WHITE, 50, anchor_x="center")
-        arcade.draw_text("Нажмите ESC для возврата", self.application.width // 2,
-            self.application.height // 2 - 100, arcade.color.WHITE,
-            20, anchor_x="center")
+        arcade.draw_text(
+            text="Настройки",
+            x=self.application.width // 2,
+            y=self.application.height // 2,
+            color=arcade.color.WHITE,
+            font_size=50,
+            anchor_x="center"
+        )
+        arcade.draw_text(
+            text="Нажмите ESC для возврата",
+            x=self.application.width // 2,
+            y=self.application.height // 2 - 100,
+            color=arcade.color.WHITE,
+            font_size=20,
+            anchor_x="center"
+        )
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
