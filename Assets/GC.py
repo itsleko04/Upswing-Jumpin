@@ -8,3 +8,5 @@ VOLUME = 0.02
 # Player Params
 PLAYER_SPEED = 6.5
 PLAYER_JUMP_FORCE = 10
+
+TITLE = "Geometry Dash 2"

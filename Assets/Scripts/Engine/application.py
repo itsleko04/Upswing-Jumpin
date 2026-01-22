@@ -1,7 +1,7 @@
 import arcade
 from Assets.Scripts.Engine import InputSystem
 from Assets.Scripts.Engine import Event
-from Assets.Scripts.Content.Levels.TestLevel import TestLevel
+from Assets.Scripts.Content.Menu import MenuView
 from Assets.Scripts.Engine import Level
 from Assets.GC import VOLUME
 
@@ -17,9 +17,9 @@ class Application:
         self.height = float(self.settings["Application"]["ScreenHeight"])
         self.window = Window(self.width, self.height)
         self.window.on_close_event.connect(self.save_volume)
+        self.window.show_view(MenuView(self))
 
         self.last_started_level = None
-        self.start_level(TestLevel(self))
     
     def start_level(self, level: Level):
         """Запуск уровня"""
