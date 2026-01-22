@@ -1,5 +1,6 @@
 import arcade
 from Assets.GC import TITLE
+from Assets.Scripts.Content.Levels.TestLevel import TestLevel
 
 
 class MenuView(arcade.View):
@@ -79,7 +80,7 @@ class SettingsView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.set_background_color(arcade.color.DARK_BLUE_GRAY)
+        arcade.set_background_color((126, 100, 145, 255))
         arcade.draw_text("Настройки", self.application.width // 2,
             self.application.height // 2, arcade.color.WHITE, 50, anchor_x="center")
         arcade.draw_text("Нажмите ESC для возврата", self.application.width // 2,
@@ -94,19 +95,37 @@ class SettingsView(arcade.View):
 
 class PlayView(arcade.View):
     """Экран игры"""
-
     def __init__(self, application):
         super().__init__()
         self.application = application
+        self.level1 = arcade.SpriteList()
+        level1 = arcade.SpriteSolidColor(200, 200, 300, 450, (90, 0, 176, 255))
+        self.level1.append(level1)
+        self.level2 = arcade.SpriteList()
+        level2 = arcade.SpriteSolidColor(200, 200, 700, 450, (90, 0, 176, 255))
+        self.level2.append(level2)
 
     def on_draw(self):
+        """Отрисовка меню выбора уровней"""
         self.clear()
-        arcade.set_background_color(arcade.color.DARK_GREEN)
-        arcade.draw_text("Игра", self.application.width // 2,
-            self.application.height // 2, arcade.color.WHITE, 50, anchor_x="center")
-        arcade.draw_text("Нажмите ESC для возврата", self.application.width // 2,
-            self.application.height // 2 - 100, arcade.color.WHITE,
-            20, anchor_x="center")
+        arcade.set_background_color((0, 126, 35, 0))
+        arcade.draw_text("Выберите уровень", 500, 700, arcade.color.WHITE, 50, anchor_x="center")
+        arcade.draw_text("Нажмите ESC для возврата", 500, 50, arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text("1 уровень", 300, 280, arcade.color.WHITE, 40, anchor_x="center")
+        arcade.draw_text("2 уровень", 700, 280, arcade.color.WHITE, 40, anchor_x="center")
+        self.level1.draw()
+        self.level2.draw()
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        """Обработка клика мышью"""
+        # Уровень 1
+        if arcade.get_sprites_at_point((x, y), self.level1):
+            self.application.start_level(TestLevel(self.application))
+            return
+
+        # Уровень 2
+        if arcade.get_sprites_at_point((x, y), self.level2):
+            return
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:

@@ -18,7 +18,7 @@ class Application:
         self.height = float(self.settings["Application"]["ScreenHeight"])
         self.window = Window(self.width, self.height)
         self.window.on_close_event.connect(self.save_volume)
-        self.start_level(TestLevel(self))
+        self.show_menu()
 
         self.last_started_level = None
     
