@@ -1,7 +1,8 @@
 import arcade
+import datetime
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.PlayerModes import PlayerCube
-from Assets.Scripts.Engine.GameResultView import GameResultView
+from Assets.Scripts.Content.GameResultView import GameResultView
 
 from Assets.Scripts.Engine import InputSystem
 from Assets.GC import GRAVITY, CAMERA_LERP
@@ -47,9 +48,13 @@ class Level(arcade.View):
             gravity_constant=GRAVITY
         )
 
+        self.gameplay_time = 0
+
     def on_update(self, delta_time):
         if self.is_game_over:
             return
+        
+        self.gameplay_time += delta_time
         
         jump_keys = (InputSystem.Keys.SPACE, InputSystem.Keys.MOUSE_LEFT)
         jumping = any([InputSystem.on_key_down(key) for key in jump_keys])
@@ -94,10 +99,10 @@ class Level(arcade.View):
 
     def __on_game_over_flag(self):
         self.is_game_over = True
-        self.window.show_view(GameResultView(self.application, "Gameover", "Вы проиграли!"))
+        self.window.show_view(GameResultView(self.application, "Gameover", "Вы проиграли!", self.gameplay_time))
 
     def __on_level_finished(self):
-        self.window.show_view(GameResultView(self.application, "VICTORY!!!", "Уровень пройден!"))
+        self.window.show_view(GameResultView(self.application, "VICTORY!!!", "Уровень пройден!", self.gameplay_time))
 
     def __try_to_jump(self):
         if self.physics_engine.can_jump(5) and self.player.change_y == 0 or self.player.can_double_jump:

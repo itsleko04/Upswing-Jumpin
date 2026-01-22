@@ -1,5 +1,8 @@
+import os
 import arcade
+import subprocess
 from Assets.GC import TITLE
+from Assets.Scripts.Engine import InputSystem
 from Assets.Scripts.Content.Levels.TestLevel import TestLevel
 
 
@@ -13,12 +16,14 @@ class MenuView(arcade.View):
         self.settings_list = arcade.SpriteList()
         self.escape_list = arcade.SpriteList()
         self.play_list = arcade.SpriteList()
+        self.tutorial_list = arcade.SpriteList()
 
     def on_show_view(self):
         """Настройка при показе меню"""
         self.settings_list.clear()
         self.escape_list.clear()
         self.play_list.clear()
+        self.tutorial_list.clear()
 
         # Настройки кнопки
         settings = arcade.Sprite("Assets/Sprites/settingsBtn.jpg", 0.5, self.application.width // 2, 250)
@@ -32,6 +37,10 @@ class MenuView(arcade.View):
         escape = arcade.Sprite("Assets/Sprites/exitBtn.jpg", 0.5, self.application.width // 2, 130)
         self.escape_list.append(escape)
 
+        #Кнопка Tutorial
+        tutorial = arcade.Sprite("Assets/Sprites/openTutorialBtn.png", 0.3, self.application.width - 100, 130)
+        self.tutorial_list.append(tutorial)
+
     def on_draw(self):
         self.clear()
         # Рисуем фон
@@ -41,6 +50,7 @@ class MenuView(arcade.View):
         self.settings_list.draw()
         self.escape_list.draw()
         self.play_list.draw()
+        self.tutorial_list.draw()
         # Заголовок
         arcade.draw_text(TITLE, self.application.width // 2,
             self.application.height - 100, arcade.color.WHITE, 50, anchor_x="center")
@@ -63,6 +73,19 @@ class MenuView(arcade.View):
         if arcade.get_sprites_at_point((x, y), self.escape_list):
             arcade.exit()
             return
+        
+        if arcade.get_sprites_at_point((x, y), self.tutorial_list):
+            self.open_tutorial()
+            return
+    
+    def open_tutorial(self):
+        try:
+            file_path = self.application.settings["Application"]["Tutorial"]
+            with open(file_path, 'r'):
+                pass
+            subprocess.run(['start', '', file_path], shell=True)
+        except FileNotFoundError:
+            pass
 
 
 class SettingsView(arcade.View):
@@ -92,8 +115,8 @@ class SettingsView(arcade.View):
             anchor_x="center"
         )
 
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.ESCAPE:
+    def on_update(self, delta_time):
+        if InputSystem.on_key_down(InputSystem.Keys.ESCAPE):
             menu_view = MenuView(self.application)
             self.window.show_view(menu_view)
 
@@ -121,6 +144,11 @@ class PlayView(arcade.View):
         self.level1.draw()
         self.level2.draw()
 
+    def on_update(self, delta_time):
+        if InputSystem.on_key_down(InputSystem.Keys.ESCAPE):
+            menu_view = MenuView(self.application)
+            self.window.show_view(menu_view)
+
     def on_mouse_press(self, x, y, button, modifiers):
         """Обработка клика мышью"""
         # Уровень 1
@@ -131,8 +159,3 @@ class PlayView(arcade.View):
         # Уровень 2
         if arcade.get_sprites_at_point((x, y), self.level2):
             return
-
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.ESCAPE:
-            menu_view = MenuView(self.application)
-            self.window.show_view(menu_view)

@@ -1,16 +1,18 @@
 import arcade
 from pyglet.graphics import Batch
-from Assets.Scripts.Engine import InputSystem
+from Assets.GC import SCORE_MULTIPLIER
 
 
 class GameResultView(arcade.View):
     """Окно результата"""
-    def __init__(self, application, caption: str, result_message: str = ""):
+    def __init__(self, application, caption: str, result_message: str = "", gameplay_time: float = 0):
         super().__init__(application.window)
         self.application = application
         self.texture = arcade.load_texture("Assets/Sprites/gameOverBG.jpg")
         self.to_menu_list = arcade.SpriteList()
         self.restart_list = arcade.SpriteList()
+
+        self.score = int(SCORE_MULTIPLIER * gameplay_time)
 
         self.gui_camera = arcade.camera.Camera2D()
         
@@ -22,6 +24,15 @@ class GameResultView(arcade.View):
             x=self.center_x,
             y=self.center_y + self.center_y * 2 / 3,
             font_size=48,
+            anchor_x="center",
+            batch=self.batch
+        )
+        self.score_txt = arcade.Text(
+            text=f"Счёт: {self.score}",
+            color=arcade.color.WHITE,
+            x=self.center_x,
+            y=self.center_y,
+            font_size=40,
             anchor_x="center",
             batch=self.batch
         )
