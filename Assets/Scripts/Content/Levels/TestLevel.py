@@ -11,6 +11,7 @@ class TestLevel(Level):
 
         self.theme_music = arcade.load_sound(LEVEL1OST)
         self.on_game_over.connect(lambda: self.theme_music_player.delete())
+        self.on_complete.connect(lambda: self.theme_music_player.delete())
         self.bg = arcade.load_texture(application.settings["Sprites"]["LevelsBG"])
 
     def setup(self):

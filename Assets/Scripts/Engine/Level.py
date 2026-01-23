@@ -18,8 +18,10 @@ class Level(arcade.View):
         self.application = application
 
         self.on_game_over = Event()
+        self.on_complete = Event()
         self.is_game_over = False
         self.on_game_over.connect(self.__on_game_over_flag)
+        self.on_complete.connect(self.__on_level_finished)
         self.cell_size = 51.2
 
     def setup(self, tilemap_path):
@@ -85,7 +87,7 @@ class Level(arcade.View):
             self.player = None
         
         if self.physics_engine.player_sprite.collides_with_list(self.finish):
-            self.__on_level_finished()
+            self.on_complete.invoke()
     
     def on_draw(self):
         self.clear()
