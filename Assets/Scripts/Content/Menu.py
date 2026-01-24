@@ -1,7 +1,5 @@
-import os
 import arcade
 import subprocess
-from Assets.GC import TITLE
 from Assets.Scripts.Engine import InputSystem
 from Assets.Scripts.Content.Levels.TestLevel import TestLevel
 
@@ -51,9 +49,6 @@ class MenuView(arcade.View):
         self.escape_list.draw()
         self.play_list.draw()
         self.tutorial_list.draw()
-        # Заголовок
-        arcade.draw_text(TITLE, self.application.width // 2,
-            self.application.height - 100, arcade.color.WHITE, 50, anchor_x="center")
 
     def on_mouse_press(self, x, y, button, modifiers):
         """Обработка клика мышью"""
