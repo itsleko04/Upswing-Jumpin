@@ -2,6 +2,7 @@ import arcade
 import subprocess
 from Assets.Scripts.Engine import InputSystem
 from Assets.Scripts.Content.Levels.TestLevel import TestLevel
+from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UISlider
 
 
 class MenuView(arcade.View):
@@ -89,32 +90,56 @@ class SettingsView(arcade.View):
     def __init__(self, application):
         super().__init__()
         self.application = application
+        self.manager = UIManager()
+        self.manager.enable()
+        self.anchor_layout = UIAnchorLayout()
+        self.box_layout = UIBoxLayout(vertical=True, space_between=10)
+
+        self.setup_widgets()
+
+        self.anchor_layout.add(self.box_layout)
+        self.manager.add(self.anchor_layout)
+
+    def setup_widgets(self):
+        slider = UISlider(
+            y=self.application.height - 100,
+            width=200, 
+            height=45, 
+            min_value=0, 
+            max_value=100, 
+            value=50
+        )
+        self.box_layout.add(slider)
 
     def on_draw(self):
         self.clear()
         arcade.set_background_color((126, 100, 145, 255))
         arcade.draw_text(
             text="Настройки",
-            x=self.application.width // 2,
-            y=self.application.height // 2,
+            x=self.application.width / 2,
+            y=self.application.height - 90,
             color=arcade.color.WHITE,
-            font_size=50,
+            font_size=60,
             anchor_x="center"
         )
         arcade.draw_text(
-            text="Нажмите ESC для возврата",
-            x=self.application.width // 2,
-            y=self.application.height // 2 - 100,
+            text="Громкость",
+            x=self.application.width / 2,
+            y=self.application.height / 2 + 60,
             color=arcade.color.WHITE,
-            font_size=20,
+            font_size=32,
             anchor_x="center"
         )
+        arcade.draw_text("Нажмите ESC для возврата", self.application.width / 2, 125, (255, 255, 255, 80), 20, anchor_x="center")
+        self.manager.draw()
 
     def on_update(self, delta_time):
         if InputSystem.on_key_down(InputSystem.Keys.ESCAPE):
             menu_view = MenuView(self.application)
             self.window.show_view(menu_view)
 
+    def on_hide_view(self):
+        self.manager.disable()
 
 class PlayView(arcade.View):
     """Экран игры"""
