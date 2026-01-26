@@ -122,16 +122,19 @@ class PlayView(arcade.View):
         super().__init__()
         self.application = application
         self.level1 = arcade.SpriteList()
-        level1 = arcade.SpriteSolidColor(200, 200, 300, 450, (90, 0, 176, 255))
+        button_size = (200, 200)
+        button_color = (173, 168, 175, 255)
+        level1 = arcade.SpriteSolidColor(button_size[0], button_size[1], 300, 450, button_color)
         self.level1.append(level1)
         self.level2 = arcade.SpriteList()
-        level2 = arcade.SpriteSolidColor(200, 200, 700, 450, (90, 0, 176, 255))
+        level2 = arcade.SpriteSolidColor(button_size[0], button_size[1], 700, 450, button_color)
         self.level2.append(level2)
 
     def on_draw(self):
         """Отрисовка меню выбора уровней"""
         self.clear()
-        arcade.set_background_color((0, 126, 35, 0))
+        bg_color = (96, 117, 102, 255)
+        arcade.set_background_color(bg_color)
         arcade.draw_text("Выберите уровень", 500, 700, arcade.color.WHITE, 50, anchor_x="center")
         arcade.draw_text("Нажмите ESC для возврата", 500, 50, (255, 255, 255, 80), 20, anchor_x="center")
         arcade.draw_text("1 уровень", 300, 280, arcade.color.WHITE, 40, anchor_x="center")
