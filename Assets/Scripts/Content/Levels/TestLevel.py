@@ -17,5 +17,6 @@ class TestLevel(Level):
     def setup(self):
         """Настраиваем игру здесь. Вызывается при старте и при рестарте"""
         super().setup(self.application.settings["Tilemap"]["TestLevel"])
-        self.theme_music_player = arcade.play_sound(self.theme_music, loop=True, volume=float(self.application.volume))
+        self.theme_music_player = arcade.play_sound(self.theme_music, loop=True,
+                                        volume=float(self.application.volume) / 100)
         self.window.set_caption("Test Level")

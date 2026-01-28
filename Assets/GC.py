@@ -3,7 +3,6 @@ GRAVITY = 0.5
 CAMERA_LERP = 0.1
 
 # Game Params
-VOLUME = 0.02
 TITLE = "Geometry Dash 2"
 SCORE_MULTIPLIER = 15
 

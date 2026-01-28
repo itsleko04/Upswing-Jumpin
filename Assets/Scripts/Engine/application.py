@@ -2,9 +2,10 @@ import arcade
 from Assets.Scripts.Engine import InputSystem
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.Menu import MenuView
-from Assets.Scripts.Content.Levels.TestLevel import TestLevel
 from Assets.Scripts.Engine import Level
-from Assets.GC import VOLUME
+
+
+SAVE_SYSTEM_PATH = "Assets/Scripts/Engine/SaveSystem"
 
 
 class Application:
@@ -12,7 +13,7 @@ class Application:
     def __init__(self, settings):
         self.settings = settings
 
-        self.volume = VOLUME
+        self.load_setups()
 
         self.width = float(self.settings["Application"]["ScreenWidth"])
         self.height = float(self.settings["Application"]["ScreenHeight"])
@@ -22,25 +23,37 @@ class Application:
 
         self.last_started_level = None
     
+    def load_setups(self):
+        """Загрузка всех сохранённых данных из SaveSystem"""
+        try:
+            with open(f"{SAVE_SYSTEM_PATH}/Volume.txt", 'r', encoding="utf-8") as f:
+                self.volume = float(f.read())
+        except FileNotFoundError:
+            pass
+        except ValueError:
+            pass
+
     def start_level(self, level: Level):
         """Запуск уровня"""
         self.last_started_level = level
         self.last_started_level.setup()
         self.window.show_view(self.last_started_level)
 
-    def set_volume(self, volume: float):
-        """Громкость от 0 до 1"""
-        self.volume = volume
-
     def save_volume(self):
-        ...
+        with open(f"{SAVE_SYSTEM_PATH}/Volume.txt", 'w', encoding="utf-8") as f:
+            f.write(str(self.volume))
 
     def show_menu(self):
+        """Запустить главное меню"""
         self.window.show_view(MenuView(self))
 
     def run(self):
         """Запустить игру"""
         arcade.run()
+    
+    def exit(self):
+        self.window.on_close()
+        arcade.exit()
 
 
 class Window(arcade.Window):

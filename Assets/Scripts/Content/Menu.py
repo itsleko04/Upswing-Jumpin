@@ -67,7 +67,7 @@ class MenuView(arcade.View):
 
         # Проверяем нажатие на Escape (выход)
         if arcade.get_sprites_at_point((x, y), self.escape_list):
-            arcade.exit()
+            self.application.exit()
             return
         
         if arcade.get_sprites_at_point((x, y), self.tutorial_list):
@@ -101,14 +101,18 @@ class SettingsView(arcade.View):
         self.manager.add(self.anchor_layout)
 
     def setup_widgets(self):
+        def set_volume_value(self, val):
+            self.application.volume = val
+
         slider = UISlider(
             y=self.application.height - 100,
             width=200, 
             height=45, 
             min_value=0, 
             max_value=100, 
-            value=50
+            value=self.application.volume
         )
+        slider.on_change = lambda e: set_volume_value(self, e.new_value)
         self.box_layout.add(slider)
 
     def on_draw(self):
@@ -130,7 +134,8 @@ class SettingsView(arcade.View):
             font_size=32,
             anchor_x="center"
         )
-        arcade.draw_text("Нажмите ESC для возврата", self.application.width / 2, 125, (255, 255, 255, 80), 20, anchor_x="center")
+        arcade.draw_text("Нажмите ESC для возврата", self.application.width / 2,
+                            125, (255, 255, 255, 80), 20, anchor_x="center")
         self.manager.draw()
 
     def on_update(self, delta_time):
@@ -139,7 +144,7 @@ class SettingsView(arcade.View):
             self.window.show_view(menu_view)
 
     def on_hide_view(self):
-        self.manager.disable()
+        self.manager.clear()
 
 class PlayView(arcade.View):
     """Экран игры"""
