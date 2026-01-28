@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="400" height="30" tilewidth="512" tileheight="512" infinite="0" nextlayerid="12" nextobjectid="1">
+ <tileset firstgid="1" source="LevelsTileset.tsx"/>
+ <layer id="5" name="collision" width="400" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt2u0KgjAYBlBp0f1fcvljIDJr7aPcPAeev68m+D5DWhYAAAAAAAAAAAAAAAAAAAAAAGZ33+SK1wcAAKDc7QcBYD72PfCt8MojkVo9Zqas95/afaFgTsx2RswVjNodoTBAvtx3plV/9HC021ruvto5qR7adxLlRus3GE3NjjpTf+x3xbvd0WqvtDyDj3qmP4vUc/MsoZ3W59l/9UfOrhitP+K80nu4Svcc/Vb9MYfe/6lIfS8XERH5FAAAAAAAAAAAAAAAAAAAAFg9AZA4Ctw=
+  </data>
+ </layer>
+ <layer id="10" name="finish" width="400" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1bEJACAQwMCv3H9kFxCENBbeQWbIDAA/WYcA4MY/ACj8A4DCPwAo/AOAwj8AKPwDgMI/ACj8A4DCPwAo/AOAwj8AKPwDgMI/ACj8A4DCPwAo/AOAwj8AKPwDAAAAAAAAAAAAAAAAAAAAAHhtA6xZAjs=
+  </data>
+ </layer>
+ <layer id="11" name="decor" width="400" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0jEKAEAIA0EL//9m2ysPRFCYge1SJgIAAAAAAAAAAAAAAAAAAAAAAAAAAACAC/IJun7/tH0HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMCMAnG1AEk=
+  </data>
+ </layer>
+ <layer id="7" name="jump_points" width="400" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1zEKwCAMBVDRwfvf2MVNBzEtte17kCUgOOUnKQEAAAAAAAAAAAAAAAAAAAAAAAAAwH/Vpz8AwGfIFIB7zebsag8AGO1mZu5VenEOexBwshx4G7kH3Y0A7xbJDwAAAAAAAAAAAAAAAAAAAAAA4BoNhDcAYw==
+  </data>
+ </layer>
+ <layer id="8" name="autojumpers" width="400" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt16EKADAIBUCj///FiytjDAwOvIsvKZZnBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA32T0AAAAA7fyGAADwLmNOhz7tWcl+NemmAAAAAAAAAAAAAAAAAAAAAABsCz1IAFE=
+  </data>
+ </layer>
+ <layer id="2" name="shapes" width="400" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1UEOhCAMBVC52Rxtjj5uJnEDYilBkveSrqr4bRM9DgAAAAAAAAAAAAAAAAAAAAAAAAAAAIB5yiZnMte5s09mLcgf6gHALlb/awFG+H4BAG9VLrWb3swrr4vMtSRWxnlRd1la2bLmUMvS2x+ZRe2ezP1m7WpEK8OMnUZ3Xsv+5B3v+pV9f//V+TgAAAAAAAAAAAAAAAAAAAAAAAJ+TCkJAA==
+  </data>
+ </layer>
+ <layer id="1" name="ground" width="400" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt2LEKgCAUhlFx8P0fuYaGkLS4GHTpHPiwqUn4wVIAAAAAAAAAAAAAAAAAAADya3v1OM/fADDTBgHAHdsBQIT9ACDCfgAQUbsgi/7urri/b/wTgG9btR8A/Iv9ACDCfgCZXL2XS5IkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSdKTNrnHIxE=
+  </data>
+ </layer>
+</map>

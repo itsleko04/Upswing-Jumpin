@@ -1,7 +1,7 @@
 import arcade
-import subprocess
+from Assets.Scripts.Content.MarkdownReader import MarkdownView
 from Assets.Scripts.Engine import InputSystem
-from Assets.Scripts.Content.Levels.TestLevel import TestLevel
+from Assets.Scripts.Content.Levels.FirstLevel import FirstLevel
 from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UISlider
 
 
@@ -75,13 +75,9 @@ class MenuView(arcade.View):
             return
     
     def open_tutorial(self):
-        try:
-            file_path = self.application.settings["Application"]["Tutorial"]
-            with open(file_path, 'r'):
-                pass
-            subprocess.run(['start', '', file_path], shell=True)
-        except FileNotFoundError:
-            pass
+        file_path = self.application.settings["Application"]["Tutorial"]
+        mdView = MarkdownView(self.application, filepath=file_path)
+        self.application.window.show_view(mdView)
 
 
 class SettingsView(arcade.View):
@@ -134,8 +130,7 @@ class SettingsView(arcade.View):
             font_size=32,
             anchor_x="center"
         )
-        arcade.draw_text("Нажмите ESC для возврата", self.application.width / 2,
-                            125, (255, 255, 255, 80), 20, anchor_x="center")
+        arcade.draw_text("Нажмите ESC для возврата", 500, 50, (255, 255, 255, 80), 20, anchor_x="center")
         self.manager.draw()
 
     def on_update(self, delta_time):
@@ -168,7 +163,7 @@ class PlayView(arcade.View):
         arcade.draw_text("Выберите уровень", 500, 700, arcade.color.WHITE, 50, anchor_x="center")
         arcade.draw_text("Нажмите ESC для возврата", 500, 50, (255, 255, 255, 80), 20, anchor_x="center")
         arcade.draw_text("1 уровень", 300, 280, arcade.color.WHITE, 40, anchor_x="center")
-        arcade.draw_text("Недоступно", 700, 280, arcade.color.RED, 40, anchor_x="center")
+        arcade.draw_text("В разработке", 700, 280, arcade.color.RED, 40, anchor_x="center")
         self.level1.draw()
         self.level2.draw()
 
@@ -181,7 +176,7 @@ class PlayView(arcade.View):
         """Обработка клика мышью"""
         # Уровень 1
         if arcade.get_sprites_at_point((x, y), self.level1):
-            self.application.start_level(TestLevel(self.application))
+            self.application.start_level(FirstLevel(self.application))
             return
 
         # Уровень 2

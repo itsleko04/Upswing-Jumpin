@@ -11,10 +11,10 @@ from Assets.GC import GRAVITY, CAMERA_LERP
 
 #region Система частиц
 SPARK_TEX = [
-    arcade.make_soft_circle_texture(16, arcade.color.ASH_GREY),
-    arcade.make_soft_circle_texture(16, arcade.color.COOL_GREY),
-    arcade.make_soft_circle_texture(16, arcade.color.BLUE_GRAY),
-    arcade.make_soft_circle_texture(16, arcade.color.DARK_GRAY),
+    arcade.make_soft_circle_texture(20, arcade.color.ASH_GREY),
+    arcade.make_soft_circle_texture(20, arcade.color.COOL_GREY),
+    arcade.make_soft_circle_texture(20, arcade.color.BLUE_GRAY),
+    arcade.make_soft_circle_texture(20, arcade.color.DARK_GRAY),
 ]
 
 
@@ -26,7 +26,7 @@ def make_trail(attached_sprite, maintain=60):
         particle_factory=lambda e: FadeParticle(
             filename_or_texture=random.choice(SPARK_TEX),
             change_xy=arcade.math.rand_in_circle((0.0, 0.0), 1.6),
-            lifetime=random.uniform(0.15, 0.3),
+            lifetime=random.uniform(0.25, 0.45),
             start_alpha=220, end_alpha=0,
             scale=random.uniform(0.25, 0.4),
         ),
@@ -92,7 +92,7 @@ class Level(arcade.View):
         self.gameplay_time += delta_time
         
         jump_keys = (InputSystem.Keys.SPACE, InputSystem.Keys.MOUSE_LEFT)
-        jumping = any([InputSystem.on_key_down(key) for key in jump_keys])
+        jumping = any([InputSystem.on_key(key) for key in jump_keys])
         if jumping:
             self.__try_to_jump()
         
@@ -130,10 +130,11 @@ class Level(arcade.View):
     def on_draw(self):
         self.clear()
         self.world_camera.use()
-        for i in range(1, 20):
-            rect = arcade.XYWH(self.window.rect.x * i, self.window.rect.y * 2, 
+        for i in range(1, 40):
+            for j in range(1, 3):
+                rect = arcade.XYWH(self.window.rect.x * i, self.window.rect.y * 2 * j, 
                                self.window.rect.width, self.window.rect.height)
-            arcade.draw_texture_rect(self.bg, rect)
+                arcade.draw_texture_rect(self.bg, rect)
         self.scene.draw()
         if self.physics_engine.can_jump() and self.player_tail_timer > 0.75:
             self.player_trail.draw()
@@ -141,10 +142,12 @@ class Level(arcade.View):
 
     def __on_game_over_flag(self):
         self.is_game_over = True
-        self.window.show_view(GameResultView(self.application, "Gameover", "Вы проиграли!", self.gameplay_time))
+        self.window.show_view(GameResultView(self.application, "Gameover",
+                                            "Вы проиграли!", self.gameplay_time, is_win=False))
 
     def __on_level_finished(self):
-        self.window.show_view(GameResultView(self.application, "VICTORY!!!", "Уровень пройден!", self.gameplay_time))
+        self.window.show_view(GameResultView(self.application, "VICTORY!!!",
+                                            "Уровень пройден!", self.gameplay_time, is_win=True))
 
     def __try_to_jump(self):
         if self.physics_engine.can_jump() and self.player.change_y == 0 or self.player.can_double_jump:
