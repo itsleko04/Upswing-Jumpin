@@ -1,0 +1,7 @@
+В консоль ввести:
+
+python main.py
+
+Курсор должен быть в папке проекта, например:
+
+D:\Python\Upswing' Jumpin'> python main.py
