@@ -47,7 +47,7 @@ class GameResultView(arcade.View):
         )
 
     def on_show_view(self):
-        """Настройка при показе меню"""
+        """Настройка GameResultView перед показом"""
         self.ui_buttons.clear()
 
         y_offset = 100
@@ -68,6 +68,7 @@ class GameResultView(arcade.View):
                                         volume=float(self.application.volume) / 100)
 
     def restart(self):
+        """Перезапустить уровень"""
         self.application.start_level(self.application.last_started_level)
 
     def on_draw(self):
@@ -87,7 +88,6 @@ class GameResultView(arcade.View):
             self.interact_sound.play()
 
     def on_mouse_press(self, x, y, button, modifiers):
-        """Обработка клика мышью"""
         for button in self.ui_buttons:
             list = arcade.SpriteList()
             list.append(button)
