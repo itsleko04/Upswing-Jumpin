@@ -8,7 +8,7 @@ from Assets.Sounds import UI_INTERACTION
 
 
 class MenuView(arcade.View):
-    """Стартовое меню"""
+    """Главный экран главного меню"""
 
     def __init__(self, application):
         super().__init__()
@@ -83,6 +83,7 @@ class SettingsView(arcade.View):
         self.manager.add(self.anchor_layout)
 
     def setup_widgets(self):
+        """Настройка Widget-ов на экране настроек"""
         def set_volume_value(self, val):
             self.application.volume = val
 
@@ -129,8 +130,9 @@ class SettingsView(arcade.View):
     def on_hide_view(self):
         self.manager.clear()
 
+
 class PlayView(arcade.View):
-    """Экран игры"""
+    """Экран выбора уровня"""
     def __init__(self, application):
         super().__init__()
         self.application = application
