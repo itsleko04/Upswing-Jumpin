@@ -1,8 +1,10 @@
 import arcade
+import time
 from Assets.Scripts.Engine import InputSystem
 from Assets.Scripts.Engine import Event
 from Assets.Scripts.Content.Menu import MenuView
 from Assets.Scripts.Engine import Level
+from Assets.Sounds import SHUTDOWN_GAME
 
 
 SAVE_SYSTEM_PATH = "Assets/Scripts/Engine/SaveSystem"
@@ -19,6 +21,9 @@ class Application:
         self.height = float(self.settings["Application"]["ScreenHeight"])
         self.window = Window(self.width, self.height)
         self.window.on_close_event.connect(self.save_volume)
+        self.window.on_close_event.connect(lambda: arcade.play_sound(arcade.load_sound(SHUTDOWN_GAME),
+                                                                    self.volume / 100))
+        self.window.on_close_event.connect(lambda: time.sleep(0.8))
         self.show_menu()
 
         self.last_started_level = None

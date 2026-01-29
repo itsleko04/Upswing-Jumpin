@@ -15,7 +15,9 @@ class GameResultView(arcade.View):
 
         self.win_sound = arcade.load_sound(WIN)
         self.death_sound = arcade.load_sound(DEATH)
-        self.interact_sound = arcade.load_sound(UI_INTERACTION)
+        self.interact_sound = arcade.play_sound(arcade.load_sound(UI_INTERACTION),
+                                volume=self.application.volume / 100)
+        self.interact_sound.pause()
         self.texture = arcade.load_texture("Assets/Sprites/gameOverBG.jpg")
         self.ui_buttons = arcade.SpriteList()
 
@@ -60,6 +62,7 @@ class GameResultView(arcade.View):
                                 self.application.width // 2,
                                 self.application.height // 2 - 120 - y_offset)
         to_menu.on_click.connect(self.application.show_menu)
+        to_menu.on_click.connect(lambda: self.application.menu_theme.play())
         self.ui_buttons.append(to_menu)
         self.sound_player = arcade.play_sound(self.win_sound if self.is_win else self.death_sound, loop=False,
                                         volume=float(self.application.volume) / 100)
