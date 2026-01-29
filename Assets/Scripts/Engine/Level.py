@@ -142,11 +142,11 @@ class Level(arcade.View):
 
     def __on_game_over_flag(self):
         self.is_game_over = True
-        self.window.show_view(GameResultView(self.application, "Gameover",
+        self.window.show_view(GameResultView(self.application, "Upswing Jumpin' | Вы умерли...",
                                             "Вы проиграли!", self.gameplay_time, is_win=False))
 
     def __on_level_finished(self):
-        self.window.show_view(GameResultView(self.application, "VICTORY!!!",
+        self.window.show_view(GameResultView(self.application, "Upswing Jumpin' | ПОБЕДА!!!",
                                             "Уровень пройден!", self.gameplay_time, is_win=True))
 
     def __try_to_jump(self):

@@ -3,7 +3,7 @@ from Assets.Scripts.Engine.Level import Level
 from Assets.Sounds.OST import LEVEL1OST
 
 
-class FirstLevel(Level):
+class PixelJump(Level):
     """Первый, пока что тестовый уровень. Непроходимый."""
     def __init__(self, application):
         super().__init__(application)

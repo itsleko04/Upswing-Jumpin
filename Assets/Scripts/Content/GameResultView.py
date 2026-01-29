@@ -62,7 +62,6 @@ class GameResultView(arcade.View):
                                 self.application.width // 2,
                                 self.application.height // 2 - 120 - y_offset)
         to_menu.on_click.connect(self.application.show_menu)
-        to_menu.on_click.connect(lambda: self.application.menu_theme.play())
         self.ui_buttons.append(to_menu)
         self.sound_player = arcade.play_sound(self.win_sound if self.is_win else self.death_sound, loop=False,
                                         volume=float(self.application.volume) / 100)

@@ -1,7 +1,9 @@
+import os
 import arcade
+import webbrowser
+from markdown import markdown
 from Assets.Scripts.Engine import InputSystem
-from Assets.Scripts.Content.MarkdownReader import MarkdownView
-from Assets.Scripts.Content.Levels.FirstLevel import FirstLevel
+from Assets.Scripts.Content.Levels.PixelJump import PixelJump
 from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UISlider
 from Assets.Scripts.Content.UIButton import UIButton
 from Assets.Sounds import UI_INTERACTION
@@ -12,6 +14,7 @@ class MenuView(arcade.View):
 
     def __init__(self, application):
         super().__init__()
+        self.window.set_caption("Upswing Jumpin' | Главное меню")
         self.application = application
         self.texture = arcade.load_texture("Assets/Sprites/menuBG.jpg")
         self.ui_buttons = arcade.SpriteList()
@@ -58,8 +61,14 @@ class MenuView(arcade.View):
     
     def open_tutorial(self):
         file_path = self.application.settings["Application"]["Tutorial"]
-        mdView = MarkdownView(self.application, filepath=file_path)
-        self.application.window.show_view(mdView)
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        html = markdown(content)
+        file_path = file_path.replace(".md", ".html")
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(html)
+        file_path = os.path.realpath(file_path)
+        webbrowser.open('file://' + file_path)
 
 
 class SettingsView(arcade.View):
@@ -67,6 +76,7 @@ class SettingsView(arcade.View):
 
     def __init__(self, application):
         super().__init__()
+        self.window.set_caption("Upswing Jumpin' | Настройки")
         self.application = application
         self.manager = UIManager()
         self.manager.enable()
@@ -134,16 +144,26 @@ class SettingsView(arcade.View):
 class PlayView(arcade.View):
     """Экран выбора уровня"""
     def __init__(self, application):
+        def __create_button(bg_color: tuple, size: tuple, x: float, y: float, logo_size_slide: int, logo_path: str):
+            bg = arcade.SpriteSolidColor(size[0], size[1], x, y, bg_color)
+            logo = arcade.Sprite(logo_path, center_x=x, center_y=y)
+            logo.width = size[0] - logo_size_slide
+            logo.height = size[1] - 20
+            return bg, logo
+
         super().__init__()
         self.application = application
+        self.window.set_caption("Upswing Jumpin' | Выбор уровня")
+        size = (200, 200)
+        bg_color = arcade.color.DARK_GREEN
+        logo_size_slide = 20
         self.level1 = arcade.SpriteList()
-        button_size = (200, 200)
-        button_color = (173, 168, 175, 255)
-        level1 = arcade.SpriteSolidColor(button_size[0], button_size[1], 300, 450, button_color)
-        self.level1.append(level1)
+        self.level1.extend(__create_button(bg_color, size, 300, 450, logo_size_slide,
+                                               "Assets/Sprites/firstLevelLogo.jpg"))
+
         self.level2 = arcade.SpriteList()
-        level2 = arcade.SpriteSolidColor(button_size[0], button_size[1], 700, 450, button_color)
-        self.level2.append(level2)
+        self.level2.extend(__create_button(bg_color, size, 700, 450, logo_size_slide,
+                                               "Assets/Sprites/secondLevelLogo.jpg"))
 
         self.interact_sound = arcade.play_sound(arcade.load_sound(UI_INTERACTION), 
                                         volume=self.application.volume / 1000)
@@ -151,13 +171,15 @@ class PlayView(arcade.View):
 
     def on_draw(self):
         """Отрисовка меню выбора уровней"""
+        # Приходится использовать костыль, 
+        # Потому что отрисовывали кнопки не через Sprite-ы, а
+        # Через встроенную геометрию
         self.clear()
-        bg_color = (96, 117, 102, 255)
-        arcade.set_background_color(bg_color)
+        arcade.set_background_color((96, 117, 102, 255))
         arcade.draw_text("Выберите уровень", 500, 700, arcade.color.WHITE, 50, anchor_x="center")
         arcade.draw_text("Нажмите ESC для возврата", 500, 50, (255, 255, 255, 80), 20, anchor_x="center")
-        arcade.draw_text("1 уровень", 300, 280, arcade.color.WHITE, 40, anchor_x="center")
-        arcade.draw_text("В разработке", 700, 280, arcade.color.RED, 40, anchor_x="center")
+        arcade.draw_text("PixelJump", 300, 280, arcade.color.WHITE, 40, anchor_x="center")
+        arcade.draw_text("В разработке", 700, 280, (255, 255, 255, 80), 40, anchor_x="center")
         self.level1.draw()
         self.level2.draw()
 
@@ -171,7 +193,7 @@ class PlayView(arcade.View):
         """Обработка клика мышью"""
         # Уровень 1
         if arcade.get_sprites_at_point((x, y), self.level1):
-            self.application.start_level(FirstLevel(self.application))
+            self.application.start_level(PixelJump(self.application))
             self.interact_sound.play()
             return
 
