@@ -2,7 +2,8 @@ import arcade
 from pyglet.graphics import Batch
 from Assets.Scripts.Engine import InputSystem
 from Assets.GC import SCORE_MULTIPLIER
-from Assets.Sounds import WIN, DEATH
+from Assets.Sounds import WIN, DEATH, UI_INTERACTION
+from Assets.Scripts.Content.UIButton import UIButton
 
 
 class GameResultView(arcade.View):
@@ -14,9 +15,9 @@ class GameResultView(arcade.View):
 
         self.win_sound = arcade.load_sound(WIN)
         self.death_sound = arcade.load_sound(DEATH)
+        self.interact_sound = arcade.load_sound(UI_INTERACTION)
         self.texture = arcade.load_texture("Assets/Sprites/gameOverBG.jpg")
-        self.to_menu_list = arcade.SpriteList()
-        self.restart_list = arcade.SpriteList()
+        self.ui_buttons = arcade.SpriteList()
 
         self.score = int(SCORE_MULTIPLIER * gameplay_time)
 
@@ -45,22 +46,21 @@ class GameResultView(arcade.View):
 
     def on_show_view(self):
         """Настройка при показе меню"""
-        self.to_menu_list.clear()
-        self.restart_list.clear()
+        self.ui_buttons.clear()
 
         y_offset = 100
 
         if not self.is_win:
-            restart = arcade.Sprite("Assets/Sprites/gameOverRestartBtn.jpg", 0.5)
-            restart.center_x = self.application.width // 2
-            restart.center_y = self.application.height // 2 - y_offset
-            self.restart_list.append(restart)
-
-        to_menu = arcade.Sprite("Assets/Sprites/showMenuBtn.jpg", 0.5)
-        to_menu.center_x = self.application.width // 2
-        to_menu.center_y = self.application.height // 2 - 120 - y_offset
-        self.to_menu_list.append(to_menu)
-
+            restart = UIButton("Assets/Sprites/gameOverRestartBtn.jpg", 0.5,
+                               self.application.width // 2,
+                               self.application.height // 2 - y_offset)
+            restart.on_click.connect(self.restart)
+            self.ui_buttons.append(restart)
+        to_menu = UIButton("Assets/Sprites/showMenuBtn.jpg", 0.5,
+                                self.application.width // 2,
+                                self.application.height // 2 - 120 - y_offset)
+        to_menu.on_click.connect(self.application.show_menu)
+        self.ui_buttons.append(to_menu)
         self.sound_player = arcade.play_sound(self.win_sound if self.is_win else self.death_sound, loop=False,
                                         volume=float(self.application.volume) / 100)
 
@@ -72,22 +72,21 @@ class GameResultView(arcade.View):
         self.gui_camera.use()
         arcade.draw_texture_rect(self.texture, arcade.rect.XYWH(self.application.width // 2,
                 self.application.height // 2, self.application.width, self.application.height))
-        self.to_menu_list.draw()
-        self.restart_list.draw()
+        self.ui_buttons.draw()
         self.batch.draw()
 
     def on_update(self, delta_time):
         if InputSystem.on_key_down(InputSystem.Keys.R):
             self.restart()
+            self.interact_sound.play()
         elif InputSystem.on_key_down(InputSystem.Keys.ESCAPE):
             self.application.show_menu()
+            self.interact_sound.play()
 
     def on_mouse_press(self, x, y, button, modifiers):
         """Обработка клика мышью"""
-        if arcade.get_sprites_at_point((x, y), self.restart_list):
-            self.restart()
-            return
-
-        if arcade.get_sprites_at_point((x, y), self.to_menu_list):
-            self.application.show_menu()
-            return
+        for button in self.ui_buttons:
+            list = arcade.SpriteList()
+            list.append(button)
+            if arcade.get_sprites_at_point((x, y), list):
+                button.click()

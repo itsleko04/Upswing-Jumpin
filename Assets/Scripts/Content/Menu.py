@@ -1,8 +1,10 @@
 import arcade
-from Assets.Scripts.Content.MarkdownReader import MarkdownView
 from Assets.Scripts.Engine import InputSystem
+from Assets.Scripts.Content.MarkdownReader import MarkdownView
 from Assets.Scripts.Content.Levels.FirstLevel import FirstLevel
 from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UISlider
+from Assets.Scripts.Content.UIButton import UIButton
+from Assets.Sounds import UI_INTERACTION
 
 
 class MenuView(arcade.View):
@@ -12,33 +14,31 @@ class MenuView(arcade.View):
         super().__init__()
         self.application = application
         self.texture = arcade.load_texture("Assets/Sprites/menuBG.jpg")
-        self.settings_list = arcade.SpriteList()
-        self.escape_list = arcade.SpriteList()
-        self.play_list = arcade.SpriteList()
-        self.tutorial_list = arcade.SpriteList()
+        self.ui_buttons = arcade.SpriteList()
 
     def on_show_view(self):
         """Настройка при показе меню"""
-        self.settings_list.clear()
-        self.escape_list.clear()
-        self.play_list.clear()
-        self.tutorial_list.clear()
+        self.ui_buttons.clear()
 
         # Настройки кнопки
-        settings = arcade.Sprite("Assets/Sprites/settingsBtn.jpg", 0.5, self.application.width // 2, 250)
-        self.settings_list.append(settings)
+        settings = UIButton("Assets/Sprites/settingsBtn.jpg", 0.5, self.application.width // 2, 250)
+        settings.on_click.connect(lambda: self.window.show_view(SettingsView(self.application)))
+        self.ui_buttons.append(settings)
 
         # Кнопка Play
-        play = arcade.Sprite("Assets/Sprites/playBtn.jpg", 0.5, self.application.width // 2, 380)
-        self.play_list.append(play)
+        play = UIButton("Assets/Sprites/playBtn.jpg", 0.5, self.application.width // 2, 380)
+        play.on_click.connect(lambda: self.window.show_view(PlayView(self.application)))
+        self.ui_buttons.append(play)
 
         # Кнопка Escape
-        escape = arcade.Sprite("Assets/Sprites/exitBtn.jpg", 0.5, self.application.width // 2, 130)
-        self.escape_list.append(escape)
+        escape = UIButton("Assets/Sprites/exitBtn.jpg", 0.5, self.application.width // 2, 130)
+        escape.on_click.connect(lambda: self.application.exit())
+        self.ui_buttons.append(escape)
 
         #Кнопка Tutorial
-        tutorial = arcade.Sprite("Assets/Sprites/openTutorialBtn.png", 0.3, self.application.width - 100, 130)
-        self.tutorial_list.append(tutorial)
+        tutorial = UIButton("Assets/Sprites/openTutorialBtn.png", 0.3, self.application.width - 100, 130)
+        tutorial.on_click.connect(lambda: self.open_tutorial())
+        self.ui_buttons.append(tutorial)
 
     def on_draw(self):
         self.clear()
@@ -46,33 +46,15 @@ class MenuView(arcade.View):
         arcade.draw_texture_rect(self.texture, arcade.rect.XYWH(self.application.width // 2,
                 self.application.height // 2, self.application.width, self.application.height))
         # Рисуем кнопки
-        self.settings_list.draw()
-        self.escape_list.draw()
-        self.play_list.draw()
-        self.tutorial_list.draw()
+        self.ui_buttons.draw()
 
     def on_mouse_press(self, x, y, button, modifiers):
         """Обработка клика мышью"""
-        # Проверяем нажатие на Settings
-        if arcade.get_sprites_at_point((x, y), self.settings_list):
-            settings_view = SettingsView(self.application)
-            self.window.show_view(settings_view)
-            return
-
-        # Проверяем нажатие на Play
-        if arcade.get_sprites_at_point((x, y), self.play_list):
-            play_view = PlayView(self.application)
-            self.window.show_view(play_view)
-            return
-
-        # Проверяем нажатие на Escape (выход)
-        if arcade.get_sprites_at_point((x, y), self.escape_list):
-            self.application.exit()
-            return
-        
-        if arcade.get_sprites_at_point((x, y), self.tutorial_list):
-            self.open_tutorial()
-            return
+        for button in self.ui_buttons:
+            list = arcade.SpriteList()
+            list.append(button)
+            if arcade.get_sprites_at_point((x, y), list):
+                button.click()
     
     def open_tutorial(self):
         file_path = self.application.settings["Application"]["Tutorial"]
@@ -93,6 +75,10 @@ class SettingsView(arcade.View):
 
         self.setup_widgets()
 
+        self.interact_sound = arcade.play_sound(arcade.load_sound(UI_INTERACTION), 
+                                        volume=self.application.volume / 1000)
+        self.interact_sound.pause()
+
         self.anchor_layout.add(self.box_layout)
         self.manager.add(self.anchor_layout)
 
@@ -109,6 +95,7 @@ class SettingsView(arcade.View):
             value=self.application.volume
         )
         slider.on_change = lambda e: set_volume_value(self, e.new_value)
+        slider.on_click = lambda e: self.interact_sound.play()
         self.box_layout.add(slider)
 
     def on_draw(self):
@@ -137,6 +124,7 @@ class SettingsView(arcade.View):
         if InputSystem.on_key_down(InputSystem.Keys.ESCAPE):
             menu_view = MenuView(self.application)
             self.window.show_view(menu_view)
+            self.interact_sound.play()
 
     def on_hide_view(self):
         self.manager.clear()
@@ -155,6 +143,10 @@ class PlayView(arcade.View):
         level2 = arcade.SpriteSolidColor(button_size[0], button_size[1], 700, 450, button_color)
         self.level2.append(level2)
 
+        self.interact_sound = arcade.play_sound(arcade.load_sound(UI_INTERACTION), 
+                                        volume=self.application.volume / 1000)
+        self.interact_sound.pause()
+
     def on_draw(self):
         """Отрисовка меню выбора уровней"""
         self.clear()
@@ -171,14 +163,17 @@ class PlayView(arcade.View):
         if InputSystem.on_key_down(InputSystem.Keys.ESCAPE):
             menu_view = MenuView(self.application)
             self.window.show_view(menu_view)
+            self.interact_sound.play()
 
     def on_mouse_press(self, x, y, button, modifiers):
         """Обработка клика мышью"""
         # Уровень 1
         if arcade.get_sprites_at_point((x, y), self.level1):
             self.application.start_level(FirstLevel(self.application))
+            self.interact_sound.play()
             return
 
         # Уровень 2
         if arcade.get_sprites_at_point((x, y), self.level2):
+            self.interact_sound.play()
             return

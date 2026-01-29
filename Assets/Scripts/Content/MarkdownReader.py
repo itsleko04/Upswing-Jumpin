@@ -1,5 +1,6 @@
 import arcade
 import Assets.Scripts.Engine.InputSystem as InputSystem
+from Assets.Sounds import UI_INTERACTION
 
 
 SCROLL_SPEED = 20
@@ -43,6 +44,8 @@ class MarkdownView(arcade.View):
     def on_update(self, delta_time):
         if InputSystem.on_key_down(InputSystem.Keys.ESCAPE):
             self.app.show_menu()
+            self.interact_sound = arcade.play_sound(arcade.load_sound(UI_INTERACTION), 
+                                        volume=self.app.volume / 1000)
 
     def draw_slider(self):
         if self.max_scroll <= 0: return
