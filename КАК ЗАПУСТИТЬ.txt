@@ -1,9 +1,0 @@
-Перед запуском нужно установить зависимости:
-Открываете консоль сочетанием Win + R. Там вводите cmd. В консоль вводите команды:
-
-pip install -r requirements.txt
-python main.py
-
-Курсор должен быть в папке проекта, например:
-
-D:\Python\Upswing' Jumpin'> python main.py

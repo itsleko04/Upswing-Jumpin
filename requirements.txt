@@ -1,2 +1,0 @@
-arcade==3.3.3
-Markdown==3.10.1
